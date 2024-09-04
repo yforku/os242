@@ -1,0 +1,61 @@
+#!/bin/bash	
+# REV38: Wed 14 Aug 2024 08:00
+# REV29: Thu 16 Feb 2023 07:00
+# REV27: Fri 26 Aug 2022 05:00
+# REV19: Thu 23 Sep 2021 01:00
+# REV17: Tue 06 Jul 2021 04:00
+# START: Wed 10 Aug 2016 13:00
+
+# Copyright (C) 2016-2024 Bin Kadal, Sdn. Bhd.
+# This program is free script/software. This program is distributed in the hope 
+# that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+# warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+XX="xx"
+
+for ii in *
+do
+   echo "XXXXXXXXXX XX XX XXXX $ii"
+   [ -d $ii ] || {
+      echo "No $ii"
+      continue
+   }
+   pushd $ii
+   git ls-remote -q -h > /dev/null 2>&1
+   [ "$?" != "0" ] && {
+      echo -n "XXXXXXXXXX SLEEP 20 XX $ii"
+      sleep 15
+      git ls-remote -q -h > /dev/null 2>&1
+      sleep 5
+      echo  "OK"
+      git ls-remote -q -h > /dev/null 2>&1
+      [ "$?" != "0" ] && {
+         echo "No $ii !!!!! !!!!!"
+         exit 0
+      }
+   }
+   sleep 2
+   nice -15 git pull --all
+   echo -n "2 "
+   nice -15 git add -A
+   nice -15 git commit -m "$HOSTNAME: $ii"
+   sleep 2
+   nice -15 git push --all
+   echo "4 OK"
+   [[ "$1" == "$XX" ]] && {
+      echo -n "======================   ======================   $ii   "
+      du -s -h . 
+      git gc --prune=now --aggressive
+      echo -n "======================   ======================   $ii   "
+      du -s -h .
+   }
+   popd
+done
+
+echo ""
+echo "====================="
+echo "NOTE: See also .shsh1"
+echo "====================="
+
+exit 0
+

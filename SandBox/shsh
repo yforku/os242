@@ -1,0 +1,20 @@
+#!/bin/bash
+# shsh:
+# REV02: Fri Apr 28 19:48:23 WIB 2017
+# REV01: Wed Sep 28 20:23:43 WIB 2016
+# START: Wed Jun 27 XX:XX:XX WIB 2012
+# Copyright (C) 2012-2017 Rahmat M. Samik-Ibrahim 
+# http://RahmatM.Samik-Ibrahim.vLSM.org/
+
+# This program is free script/ software. This program is distributed in the hope 
+# that it will be useful, but WITHOUT ANY WARRANTY; without even the implied 
+# warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+[ -f .shsh ] && {
+	/bin/bash .shsh $*
+	exit 0
+}
+
+echo "Where is the .shsh file???"
+exit 1
+
